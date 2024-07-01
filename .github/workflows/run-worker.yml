@@ -1,0 +1,25 @@
+name: Run Cloudflare Workers Script
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install wrangler
+        run: npm install @cloudflare/wrangler
+
+      - name: Publish worker
+        run: wrangler publish --account-id YOUR_CLOUDFLARE_ACCOUNT_ID
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
